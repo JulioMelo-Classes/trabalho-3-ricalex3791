@@ -26,6 +26,11 @@ class SnakeGame{
         std::string choice; //<! usado na função process_actions para guardar a escolha do usuário
         GameStates state; //<! guarda o estado do jogo
 
+        int score=0;
+
+        //posiçoes da comida
+        int foodL, foodC;
+
         Snake snake; //<! Cria a cobra
         Player player;
 
@@ -55,6 +60,8 @@ class SnakeGame{
         * @brief processa as entradas do jogador
         **/
         void process_actions();
+
+        void place_food();
 
         /**
         * @brief testa o estado do jogo e desenha a tela correspondente

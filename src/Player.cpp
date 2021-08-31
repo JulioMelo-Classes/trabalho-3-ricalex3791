@@ -4,15 +4,14 @@
 #include <fstream>
 #include <string>
 
-#include <random>       // std::default_random_engine
-#include <time.h>
+#include <ctime>
 
 
 
 Direction Player:: next_move(Snake snake, const std::vector<std::string> maze)
 {
     Direction newDirection = snake.getCurrentPos();
-    srand (time(NULL));
+    srand ((unsigned int)time(NULL));
     int directionChosen;
 
     //<! Embaralhar array
@@ -72,6 +71,10 @@ Direction Player:: next_move(Snake snake, const std::vector<std::string> maze)
                 }
             }
             movesTried++;
+            if(movesTried==3 && hasMoved==false){
+                newDirection.facingDirection=-1;
+                return newDirection;
+            }
         }
     }
 
@@ -104,6 +107,10 @@ Direction Player:: next_move(Snake snake, const std::vector<std::string> maze)
                 }
             }
             movesTried++;
+            if(movesTried==3 && hasMoved==false){
+                newDirection.facingDirection=-1;
+                return newDirection;
+            }
         }
     }
 
@@ -136,6 +143,10 @@ Direction Player:: next_move(Snake snake, const std::vector<std::string> maze)
                 }
             }
             movesTried++;
+            if(movesTried==3 && hasMoved==false){
+                newDirection.facingDirection=-1;
+                return newDirection;
+            }
         }
     }
 
@@ -168,6 +179,10 @@ Direction Player:: next_move(Snake snake, const std::vector<std::string> maze)
                 }
             }
             movesTried++;
+            if(movesTried==3 && hasMoved==false){
+                newDirection.facingDirection=-1;
+                return newDirection;
+            }
         }
     }
 
