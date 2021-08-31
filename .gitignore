@@ -58,3 +58,4 @@ build/Win32/Debug/ZERO_CHECK/ZERO_CHECK.tlog/custombuild.write.1.tlog
 build/Win32/Debug/ZERO_CHECK/ZERO_CHECK.tlog/ZERO_CHECK.lastbuildstate
 build/ZERO_CHECK.vcxproj
 build/ZERO_CHECK.vcxproj.filters
+build/snaze.dir/Debug/Player.obj
