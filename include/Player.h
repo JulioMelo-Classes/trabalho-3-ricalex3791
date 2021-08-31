@@ -3,10 +3,12 @@
 #include <iostream>
 #include <vector>
 #include "Snake.h"
+#include "Direction.h"
 
 class Player {
     bool find_solution();
-    void next_move();
+    public:
+        Direction next_move(Snake snake, const std::vector<std::string> maze);
 };
 
 #endif 

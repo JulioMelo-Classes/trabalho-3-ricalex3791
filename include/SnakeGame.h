@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include "Snake.h"
+#include "Player.h"
 
 
 class SnakeGame{
@@ -26,6 +27,7 @@ class SnakeGame{
         GameStates state; //<! guarda o estado do jogo
 
         Snake snake; //<! Cria a cobra
+        Player player;
 
     public:
         /**

@@ -1,6 +1,7 @@
 #include "SnakeGame.h"
 #include "Level.h"
 #include "Snake.h"
+#include "Player.h"
 
 #include <iostream>
 #include <fstream>
@@ -28,7 +29,7 @@ void SnakeGame::initialize_game(int argc, char *argv[]){
     int lineCount = 0;
 
     //Level firstLevel(argc, argv);
-    //Snake snake;
+    //
     //snake.lives = 5;
 
     string line;
@@ -45,7 +46,7 @@ void SnakeGame::initialize_game(int argc, char *argv[]){
         for(int j = 0; j < maze[i].size(); j++){
             if(maze[i][j]=='*'){
                 cout<<"chamando funcao de classe com posicoes "<<i<<j<<endl;
-                snake.ReadCurrentPos(i, j);
+                snake.ReadCurrentPos(i, j, 1);
             }
             
         }
@@ -77,6 +78,13 @@ void SnakeGame::update(){
     //atualiza o estado do jogo de acordo com o resultado da chamada de "process_input"
     switch(state){
         case RUNNING:
+            Direction temp;
+            temp = player.next_move(snake, maze);
+
+            snake.ReadCurrentPos(temp.l_pos, temp.c_pos, temp.facingDirection);
+
+            cout<<"a nova direcao eh "<< temp.l_pos << " e " <<temp.c_pos<<endl;
+
             if(frameCount>0 && frameCount%10 == 0) //depois de 10 frames o jogo pergunta se o usuário quer continuar
                 state = WAITING_USER;
             break;
@@ -129,10 +137,21 @@ void SnakeGame::render(){
             l = snake.getCurrentPos().l_pos;
             c = snake.getCurrentPos().c_pos;
 
+            char snakeHead;
+            if(snake.getCurrentPos().facingDirection == 1){
+                snakeHead = 'v';
+            }else if(snake.getCurrentPos().facingDirection == 2){
+                snakeHead = '<';
+            }else if(snake.getCurrentPos().facingDirection == 3){
+                snakeHead = '^';
+            }else if(snake.getCurrentPos().facingDirection == 4){
+                snakeHead = '>';
+            }
+
             for(int i = 0; i < maze.size(); i++){
                 for(int j = 0; j < maze[i].size(); j++){
                     if(i==l && j==c){
-                       cout<<"v";
+                       cout<<snakeHead;
                     }else{
                        cout<<maze[i][j];
                     }
@@ -160,6 +179,6 @@ void SnakeGame::loop(){
         process_actions();
         update();
         render();
-        wait(500);// espera 0.5 segundo entre cada frame
+        wait(1000);// espera 1 segundo entre cada frame
     }
 }

@@ -10,6 +10,7 @@ include_directories( include )
 add_executable( snaze
                 src/Snaze.cpp
                 src/Snake.cpp
+                src/Player.cpp
                 src/SnakeGame.cpp )
 
 # The end
