@@ -106,8 +106,8 @@ void SnakeGame::update(){
             }
 
 
-            if(frameCount>0 && frameCount%10 == 0) //depois de 10 frames o jogo pergunta se o usuário quer continuar
-                state = WAITING_USER;
+            //if(frameCount>0 && frameCount%10 == 0) //depois de 10 frames o jogo pergunta se o usuário quer continuar
+            //    state = WAITING_USER;
             break;
         case WAITING_USER: //se o jogo estava esperando pelo usuário então ele testa qual a escolha que foi feita
             if(choice == "n"){
@@ -199,6 +199,6 @@ void SnakeGame::loop(){
         process_actions();
         update();
         render();
-        wait(500);// espera 1 segundo entre cada frame
+        wait(100);// espera 1 segundo entre cada frame
     }
 }
