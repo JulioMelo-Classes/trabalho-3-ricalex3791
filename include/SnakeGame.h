@@ -21,10 +21,12 @@ class SnakeGame{
         //<! atributos adicione outros se quiser
         int l;
         int c;
+        bool tempResult; 
         std::vector<std::string> maze; //<! vector contendo o labirinto atual, pode ser interpretado como uma matriz
         int frameCount; //<! contador de frames, usado apenas como exemplo
         std::string choice; //<! usado na função process_actions para guardar a escolha do usuário
         GameStates state; //<! guarda o estado do jogo
+        
 
         int score=0;
 

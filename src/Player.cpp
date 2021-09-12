@@ -6,7 +6,199 @@
 
 #include <ctime>
 
+using namespace std;
 
+bool Player:: find_solution(Snake snake, const std::vector<std::string> maze){
+    bool solved = false;
+    Direction newDirection = snake.getCurrentPos();
+
+    if(maze[newDirection.l_pos][newDirection.c_pos] == '*'){
+        cout<<"Encontrou comida"<<endl;
+        return true;
+    }
+
+    // Cobra está indo para o norte
+    if(newDirection.facingDirection == 1){
+        if(maze[newDirection.l_pos-1][newDirection.c_pos] != '#'){
+            newDirection.l_pos-=1;
+            //cout<<"porfavormeajuda"<<endl;
+            newDirection.facingDirection=1;
+            cout<<"Posicao["<<newDirection.l_pos<<"]"<<"["<<newDirection.c_pos<<"]"<<endl;
+            snake.ReadCurrentPos(newDirection.l_pos, newDirection.c_pos, newDirection.facingDirection);
+            direcoes.push_back(newDirection);
+            solved = find_solution(snake, maze);
+
+            if(solved){
+                return true;
+            }
+        }
+
+        if(maze[newDirection.l_pos][newDirection.c_pos+1] != '#'){
+            newDirection.c_pos+=1;
+            newDirection.facingDirection=2;
+            cout<<"Posicao["<<newDirection.l_pos<<"]"<<"["<<newDirection.c_pos<<"]"<<endl;
+            snake.ReadCurrentPos(newDirection.l_pos, newDirection.c_pos, newDirection.facingDirection);
+            direcoes.push_back(newDirection);
+            solved = find_solution(snake, maze);
+
+            if(solved){
+                return true;
+            }
+        }
+
+        if(maze[newDirection.l_pos][newDirection.c_pos-1] != '#'){
+            newDirection.c_pos-=1;
+            newDirection.facingDirection=4;
+            cout<<"Posicao["<<newDirection.l_pos<<"]"<<"["<<newDirection.c_pos<<"]"<<endl;
+            snake.ReadCurrentPos(newDirection.l_pos, newDirection.c_pos, newDirection.facingDirection);
+            direcoes.push_back(newDirection);
+            solved = find_solution(snake, maze);
+
+            if(solved){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    // Cobra está indo para o Leste
+    if(newDirection.facingDirection == 2){
+        if(maze[newDirection.l_pos][newDirection.c_pos+1] != '#'){
+            newDirection.c_pos+=1;
+            //cout<<"porfavormeajuda"<<endl;
+            newDirection.facingDirection=2;
+            cout<<"Posicao["<<newDirection.l_pos<<"]"<<"["<<newDirection.c_pos<<"]"<<endl;
+            snake.ReadCurrentPos(newDirection.l_pos, newDirection.c_pos, newDirection.facingDirection);
+            direcoes.push_back(newDirection);
+            solved = find_solution(snake, maze);
+
+            if(solved){
+                return true;
+            }
+        }
+
+        if(maze[newDirection.l_pos+1][newDirection.c_pos] != '#'){
+            newDirection.l_pos+=1;
+            newDirection.facingDirection=3;
+            cout<<"Posicao["<<newDirection.l_pos<<"]"<<"["<<newDirection.c_pos<<"]"<<endl;
+            snake.ReadCurrentPos(newDirection.l_pos, newDirection.c_pos, newDirection.facingDirection);
+            direcoes.push_back(newDirection);
+            solved = find_solution(snake, maze);
+
+            if(solved){
+                return true;
+            }
+        }
+
+        if(maze[newDirection.l_pos-1][newDirection.c_pos] != '#'){
+            newDirection.l_pos-=1;
+            newDirection.facingDirection=1;
+            cout<<"Posicao["<<newDirection.l_pos<<"]"<<"["<<newDirection.c_pos<<"]"<<endl;
+            snake.ReadCurrentPos(newDirection.l_pos, newDirection.c_pos, newDirection.facingDirection);
+            direcoes.push_back(newDirection);
+            solved = find_solution(snake, maze);
+
+            if(solved){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    // Cobra está indo para o Sul
+    if(newDirection.facingDirection == 3){
+        if(maze[newDirection.l_pos+1][newDirection.c_pos] != '#'){
+            newDirection.l_pos+=1;
+            //cout<<"porfavormeajuda"<<endl;
+            newDirection.facingDirection=3;
+            cout<<newDirection.facingDirection<<" Posicao["<<newDirection.l_pos<<"]"<<"["<<newDirection.c_pos<<"]"<<endl;
+            snake.ReadCurrentPos(newDirection.l_pos, newDirection.c_pos, newDirection.facingDirection);
+            direcoes.push_back(newDirection);
+            solved = find_solution(snake, maze);
+
+            if(solved){
+                return true;
+            }
+        }else if(maze[newDirection.l_pos][newDirection.c_pos-1] != '#'){
+            newDirection.c_pos-=1;
+            newDirection.facingDirection=4;
+            cout<<newDirection.facingDirection<<" Posicao["<<newDirection.l_pos<<"]"<<"["<<newDirection.c_pos<<"]"<<endl;
+            snake.ReadCurrentPos(newDirection.l_pos, newDirection.c_pos, newDirection.facingDirection);
+            direcoes.push_back(newDirection);
+            solved = find_solution(snake, maze);
+
+            if(solved){
+                return true;
+            }
+        }else if(maze[newDirection.l_pos][newDirection.c_pos+1] != '#'){
+            newDirection.c_pos+=1;
+            newDirection.facingDirection=2;
+            cout<<newDirection.facingDirection<<" Posicao["<<newDirection.l_pos<<"]"<<"["<<newDirection.c_pos<<"]"<<endl;
+            snake.ReadCurrentPos(newDirection.l_pos, newDirection.c_pos, newDirection.facingDirection);
+            direcoes.push_back(newDirection);
+            solved = find_solution(snake, maze);
+
+            if(solved){
+                return true;
+            }
+        }else if(newDirection.l_pos == 6 && newDirection.c_pos == 6){
+            cout<<"END"<<endl;
+            return false;
+        }
+
+        
+    }
+
+    // Cobra está indo para o Oeste
+    if(newDirection.facingDirection == 4){
+        if(maze[newDirection.l_pos][newDirection.c_pos-1] != '#'){
+            newDirection.c_pos-=1;
+            //cout<<"porfavormeajuda"<<endl;
+            newDirection.facingDirection=4;
+            cout<<"Posicao["<<newDirection.l_pos<<"]"<<"["<<newDirection.c_pos<<"]"<<endl;
+            snake.ReadCurrentPos(newDirection.l_pos, newDirection.c_pos, newDirection.facingDirection);
+            direcoes.push_back(newDirection);
+            solved = find_solution(snake, maze);
+
+            if(solved){
+                return true;
+            }
+        }
+
+        if(maze[newDirection.l_pos-1][newDirection.c_pos] != '#'){
+            newDirection.l_pos-=1;
+            newDirection.facingDirection=1;
+            cout<<"Posicao["<<newDirection.l_pos<<"]"<<"["<<newDirection.c_pos<<"]"<<endl;
+            snake.ReadCurrentPos(newDirection.l_pos, newDirection.c_pos, newDirection.facingDirection);
+            direcoes.push_back(newDirection);
+            solved = find_solution(snake, maze);
+
+            if(solved){
+                return true;
+            }
+        }
+
+        if(maze[newDirection.l_pos+1][newDirection.c_pos] != '#'){
+            newDirection.l_pos+=1;
+            newDirection.facingDirection=3;
+            cout<<"Posicao["<<newDirection.l_pos<<"]"<<"["<<newDirection.c_pos<<"]"<<endl;
+            snake.ReadCurrentPos(newDirection.l_pos, newDirection.c_pos, newDirection.facingDirection);
+            direcoes.push_back(newDirection);
+            solved = find_solution(snake, maze);
+
+            if(solved){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    
+
+    return false;
+}
 
 Direction Player:: next_move(Snake snake, const std::vector<std::string> maze)
 {

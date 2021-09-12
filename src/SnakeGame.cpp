@@ -47,7 +47,9 @@ void SnakeGame::initialize_game(int argc, char *argv[]){
     }
 
     // Define posição da primeira comida
-    place_food();
+    //place_food();
+
+    cout<<"mudando state"<<endl;
 
     state = RUNNING;
 }
@@ -89,24 +91,40 @@ void SnakeGame::update(){
     //atualiza o estado do jogo de acordo com o resultado da chamada de "process_input"
     switch(state){
         case RUNNING:
-            Direction temp;
-            temp = player.next_move(snake, maze);
-            if(temp.facingDirection == -1){
+            // Direction temp;
+            // temp = player.next_move(snake, maze);
+            // if(temp.facingDirection == -1){
+            //     state = GAME_OVER;
+            //     game_over();
+            // }
+
+            // snake.ReadCurrentPos(temp.l_pos, temp.c_pos, temp.facingDirection);
+
+            // //checar se pegou a comida
+            // if(temp.l_pos == foodL && temp.c_pos == foodC){
+            //     score++;
+            //     maze[foodL][foodC] = ' ';
+            //     place_food();
+            // }
+
+            
+            tempResult = player.find_solution(snake, maze);
+            cout<<"temp result eh "<<tempResult<<endl;
+            if(tempResult){
+                cout<<"ENCONTRO SOLUCAO"<<endl;
+                for(int i=0; i<player.direcoes.size(); i++){
+                    cout<<"Posicao["<<player.direcoes[i].l_pos<<"]"<<"["<<player.direcoes[i].c_pos<<"]"<<endl;
+                }
+                state = GAME_OVER;
+                game_over();
+            }else{
+                cout<<"Nao foram encontradas solucoes"<<endl;
                 state = GAME_OVER;
                 game_over();
             }
 
-            snake.ReadCurrentPos(temp.l_pos, temp.c_pos, temp.facingDirection);
 
-            //checar se pegou a comida
-            if(temp.l_pos == foodL && temp.c_pos == foodC){
-                score++;
-                maze[foodL][foodC] = ' ';
-                place_food();
-            }
-
-
-            if(frameCount>0 && frameCount%50 == 0) //depois de 10 frames o jogo pergunta se o usuário quer continuar
+            if(frameCount>0 && frameCount%1 == 0) //depois de 10 frames o jogo pergunta se o usuário quer continuar
                 state = WAITING_USER;
             break;
         case WAITING_USER: //se o jogo estava esperando pelo usuário então ele testa qual a escolha que foi feita
@@ -139,7 +157,7 @@ void wait(int ms){
 void clearScreen(){
 //some C++ voodoo here ;D
 #if defined _WIN32
-    system("cls");
+    //system("cls");
 #elif defined (__LINUX__) || defined(__gnu_linux__) || defined(__linux__)
     system("clear");
 #elif defined (__APPLE__)
