@@ -106,7 +106,7 @@ void SnakeGame::update(){
             }
 
 
-            if(frameCount>0 && frameCount%10 == 0) //depois de 10 frames o jogo pergunta se o usuário quer continuar
+            if(frameCount>0 && frameCount%50 == 0) //depois de 10 frames o jogo pergunta se o usuário quer continuar
                 state = WAITING_USER;
             break;
         case WAITING_USER: //se o jogo estava esperando pelo usuário então ele testa qual a escolha que foi feita
@@ -151,6 +151,9 @@ void SnakeGame::render(){
     clearScreen();
     switch(state){
         case RUNNING:
+            cout << "----------------------------------------" << endl;
+            cout << "Sua pontuaçao eh: " << score << endl;
+            cout << "----------------------------------------" << endl;
             //desenha todas as linhas do labirinto
             l = snake.getCurrentPos().l_pos;
             c = snake.getCurrentPos().c_pos;
@@ -199,6 +202,6 @@ void SnakeGame::loop(){
         process_actions();
         update();
         render();
-        wait(500);// espera 1 segundo entre cada frame
+        wait(100);// espera 1 segundo entre cada frame
     }
 }
