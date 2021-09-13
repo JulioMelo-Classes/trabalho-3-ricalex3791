@@ -7,6 +7,7 @@ class Direction{
         int facingDirection; // Direção da cobra
         int l_pos; // Linha
         int c_pos; // Coluna
+        int stuck;
 };
 
 #endif

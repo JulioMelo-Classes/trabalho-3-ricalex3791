@@ -5,6 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include<sstream>
 
 
 #include <chrono> //por causa do sleep
@@ -20,16 +21,39 @@ SnakeGame::SnakeGame(int argc, char *argv[]){
 }
 
 void SnakeGame::initialize_game(int argc, char *argv[]){
-
+    mazeSizeX = 0;
+    mazeSizeY = 0;
     //carrega o nivel ou os níveis
     ifstream levelFile;
     levelFile.open(argv[1], ios::in);
     int lineCount = 0;
     string line;
+
+    int counter;
     if(levelFile.is_open()){
         while(getline(levelFile, line)){ //pega cada linha do arquivo
+            //Lê informações do mapa
+            istringstream iss(line);
+            if(lineCount==0){
+                istringstream ss(line);
+                string del;
+                counter=0;
+                    while(getline(ss, del, ' ')) {
+                    string fs(del);
+
+                    if(counter == 0 ){
+                        mazeSizeX = stof(del);
+                    }
+                    if(counter == 1){
+                        mazeSizeY = stof(del);
+                    }
+                    counter++;
+                }
+            }
+
             if(lineCount > 0){ //ignora a primeira linha já que ela contem informações que não são uteis para esse exemplo
                 maze.push_back(line);
+                
             }
             lineCount++;
         }
@@ -40,14 +64,40 @@ void SnakeGame::initialize_game(int argc, char *argv[]){
         for(unsigned int j = 0; j < maze[i].size(); j++){
             if(maze[i][j]=='v'){
                 maze[i][j]=' ';
-                snake.ReadCurrentPos(i, j, 1);
+                snake.ReadCurrentPos(i, j, 1,0);
             }
-            
         }
     }
 
     // Define posição da primeira comida
     //place_food();
+
+    cout<<"O tamanho do mapa eh ["<<mazeSizeX<<"]["<<mazeSizeY<<"]"<<endl;
+
+    //visitado( mazeSizeX , vector<int> (mazeSizeY, 0));
+    // for(int i = 0; i < mazeSizeX; i++)
+    // {
+    //     for(int j = 0; j < mazeSizeY; j++)
+    //     {
+    //         cout << vec[i][j] << " ";
+    //     }
+    //     cout<< endl;
+    // }
+
+    vector<vector<int>> vec( mazeSizeX , vector<int> (mazeSizeY, 0));
+    // for (int i=0; i<maze.size(); i++)
+    //     visitado.push_back(maze[i]);
+    
+    // cout << "Old vector elements are : ";
+    // for (int i=0; i<maze.size(); i++)
+    //     cout << maze[i] << " ";
+    // cout << endl;
+  
+    // cout << "New vector elements are : ";
+    // for (int i=0; i<visitado.size(); i++)
+    //     cout << visitado[i] << " ";
+    // cout<< endl;
+
 
     cout<<"mudando state"<<endl;
 
@@ -107,16 +157,27 @@ void SnakeGame::update(){
             //     place_food();
             // }
 
-            
-            tempResult = player.find_solution(snake, maze);
-            cout<<"temp result eh "<<tempResult<<endl;
+            x = snake.getCurrentPos().c_pos;
+            y = snake.getCurrentPos().l_pos;
+            dir = snake.getCurrentPos().facingDirection;
+
+            //Inicializa matriz de locais visitados
+            for(int i=0; i<mazeSizeX; i++)
+            {
+                std::vector <int> visitadoCol;
+                for(int j=0; j<mazeSizeY; j++)
+                {
+                    visitadoCol.push_back( 0 );
+                }
+                visitado2.push_back(visitadoCol);
+            }
+
+            tempResult = player.find_solution(x, y, dir, maze, visitado2);
             if(tempResult){
                 cout<<"ENCONTRO SOLUCAO"<<endl;
                 for(int i=0; i<player.direcoes.size(); i++){
                     cout<<"Posicao["<<player.direcoes[i].l_pos<<"]"<<"["<<player.direcoes[i].c_pos<<"]"<<endl;
                 }
-                state = GAME_OVER;
-                game_over();
             }else{
                 cout<<"Nao foram encontradas solucoes"<<endl;
                 state = GAME_OVER;

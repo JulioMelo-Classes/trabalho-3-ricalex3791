@@ -6,12 +6,9 @@
 #include "Direction.h"
 
 class Player {
-    
-
-    
     public:
         std::vector<Direction> direcoes; //<! Vetor com as direções a serem tomadas até a comida
-        bool find_solution(Snake snake, const std::vector<std::string> maze);
+        bool find_solution(int x, int y, int dir, const std::vector<std::string> maze, std::vector< std::vector <int> > visitado2);
         Direction next_move(Snake snake, const std::vector<std::string> maze);
 };
 
