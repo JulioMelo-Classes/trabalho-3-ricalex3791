@@ -42,13 +42,13 @@ void SnakeGame::initialize_game(int argc, char *argv[]){
                     string fs(del);
 
                     if(counter == 0 ){
-                        mazeSizeX = stof(del);
+                        mazeSizeX = stoi(del);
                     }
                     if(counter == 1){
-                        mazeSizeY = stof(del);
+                        mazeSizeY = stoi(del);
                     }
                     if(counter == 2){
-                        scoreToWin = stof(del);
+                        scoreToWin = stoi(del);
                     }
                     counter++;
                 }
@@ -77,34 +77,6 @@ void SnakeGame::initialize_game(int argc, char *argv[]){
     place_food();
 
     cout<<"O tamanho do mapa eh ["<<mazeSizeX<<"]["<<mazeSizeY<<"]"<<endl;
-
-    // foodL = 1;
-    // foodC = 8;
-
-    //visitado( mazeSizeX , vector<int> (mazeSizeY, 0));
-    // for(int i = 0; i < mazeSizeX; i++)
-    // {
-    //     for(int j = 0; j < mazeSizeY; j++)
-    //     {
-    //         cout << vec[i][j] << " ";
-    //     }
-    //     cout<< endl;
-    // }
-
-    vector<vector<int>> vec( mazeSizeX , vector<int> (mazeSizeY, 0));
-    // for (int i=0; i<maze.size(); i++)
-    //     visitado.push_back(maze[i]);
-    
-    // cout << "Old vector elements are : ";
-    // for (int i=0; i<maze.size(); i++)
-    //     cout << maze[i] << " ";
-    // cout << endl;
-  
-    // cout << "New vector elements are : ";
-    // for (int i=0; i<visitado.size(); i++)
-    //     cout << visitado[i] << " ";
-    // cout<< endl;
-
 
     cout<<"mudando state"<<endl;
 
@@ -163,17 +135,6 @@ void SnakeGame::update(){
     //atualiza o estado do jogo de acordo com o resultado da chamada de "process_input"
     switch(state){
         case RUNNING:
-            // Direction temp;
-            // temp = player.next_move(snake, maze);
-            // if(temp.facingDirection == -1){
-            //     state = GAME_OVER;
-            //     game_over();
-            // }
-
-            // snake.ReadCurrentPos(temp.l_pos, temp.c_pos, temp.facingDirection);
-
-            // //checar se pegou a comida
-            
             if(score >= scoreToWin){
                 state = GAME_OVER;
                 game_over();
@@ -194,39 +155,10 @@ void SnakeGame::update(){
                 visitado2.push_back(visitadoCol);
             }
 
-            // for(unsigned int i = 0; i < maze.size(); i++){
-            //     for(unsigned int j = 0; j < maze[i].size(); j++){
-            //         cout<<maze[i][j];
-                    
-            //     }
-            //     cout<<endl;
-            // }
-
             tempResult = player.find_solution(x, y, dir, maze, visitado2);
             if(tempResult){
-                cout<<"ENCONTRO SOLUCAO"<<endl;
-                
-                // Direction newDirection = player.direcoes.back();
-                // snake.ReadCurrentPos(newDirection.l_pos, newDirection.c_pos,newDirection.facingDirection);
-                // x = snake.getCurrentPos().c_pos;
-                // y = snake.getCurrentPos().l_pos;
-
-                // maze[y-1][x] = ' ';
-                // // for(int i=0; i<player.direcoes.size(); i++){
-                // //     cout<<"Posicao["<<player.direcoes[i].l_pos<<"]"<<"["<<player.direcoes[i].c_pos<<"]"<<endl;
-                // // }
-                // cout<<x<<y<<endl;
-                // cout<<maze[y-1][x]<<endl;
-                // for(unsigned int i = 0; i < maze.size(); i++){
-                //     for(unsigned int j = 0; j < maze[i].size(); j++){
-                //         cout<<maze[i][j];
-                        
-                //     }
-                //     cout<<endl;
-                // }
+                cout<<"ENCONTROU SOLUCAO"<<endl;
                 state = RENDERING;
-                // state = GAME_OVER;
-                // game_over();
             }else{
                 cout<<"Nao foram encontradas solucoes"<<endl;
                 state = GAME_OVER;
@@ -238,11 +170,8 @@ void SnakeGame::update(){
             //     state = WAITING_USER;
             break;
         case RENDERING:
-            // for(int i=0; i<player.direcoes.size();i++){
-
-            // }
             Direction newDirection;
-            newDirection = player.next_move();
+            newDirection = player.next_move(snake);
             snake.ReadCurrentPos(newDirection.l_pos, newDirection.c_pos,newDirection.facingDirection);
 
             if(player.direcoes.size()!=0){
@@ -252,13 +181,9 @@ void SnakeGame::update(){
                 maze[foodL][foodC] = ' ';
                 snake.ReadCurrentPos(foodL, foodC,newDirection.facingDirection);
                 place_food();
-
-                cout<<"JA ACABOU"<<endl;
+                
                 state = RUNNING;
             }
-
-            //state = RUNNING;
-            
 
             break;
         case WAITING_USER: //se o jogo estava esperando pelo usuário então ele testa qual a escolha que foi feita
@@ -291,7 +216,7 @@ void wait(int ms){
 void clearScreen(){
 //some C++ voodoo here ;D
 #if defined _WIN32
-    //system("cls");
+    system("cls");
 #elif defined (__LINUX__) || defined(__gnu_linux__) || defined(__linux__)
     system("clear");
 #elif defined (__APPLE__)
@@ -304,13 +229,12 @@ void SnakeGame::render(){
     switch(state){
         case RUNNING:
             cout<< "Calculando Movimentos"<<endl;
-            cout << "A lista de movimentos tem: "<< player.direcoes.size() << endl;
             break;
         case RENDERING:
             cout << "----------------------------------------" << endl;
             cout << "Sua pontuaçao eh: " << score << endl;
             cout << "Restam movimentos: "<< player.direcoes.size() << endl;
-            cout << "Precisa de pontos: "<< scoreToWin << endl;
+            cout << "Pontos para vencer: "<< (scoreToWin-score) << endl;
             cout << "----------------------------------------" << endl;
             //desenha todas as linhas do labirinto
             l = snake.getCurrentPos().l_pos;
@@ -342,17 +266,28 @@ void SnakeGame::render(){
             }
             break;
         case WAITING_USER:
-            cout<<"Sua pontuação é: " << score << ". Você quer continuar com o jogo? (s/n)"<<endl;
+            cout<<"Sua pontuação eh: " << score << ". Você quer continuar com o jogo? (s/n)"<<endl;
             break;
         case GAME_OVER:
             cout<<"O jogo terminou!"<<endl;
+            for(unsigned int i = 0; i < maze.size(); i++){
+                for(unsigned int j = 0; j < maze[i].size(); j++){
+                    if(i==l && j==c){
+                       cout<<'x';
+                    }else{
+                       cout<<maze[i][j];
+                    }
+                    
+                }
+                cout<<endl;
+            }
             break;
     }
     frameCount++;
 }
 
 void SnakeGame::game_over(){
-    cout<<"Desculpe, você perdeu!"<<endl;
+    cout<<"Desculpe, voce perdeu!"<<endl;
 }
 
 void SnakeGame::loop(){
@@ -360,6 +295,6 @@ void SnakeGame::loop(){
         process_actions();
         update();
         render();
-        wait(200);// espera 1 segundo entre cada frame
+        wait(100);// espera 1 segundo entre cada frame
     }
 }

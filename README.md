@@ -20,8 +20,7 @@ Ainda no PowerShell, execute um "cd .." para voltar para o diretório padrão do
 ```console
 ./build/Debug/snaze.exe ./data/[nome do mapa]
 ```
-... substituindo o [nome do mapa] pelo nome de alguns dos arquivos na pasta /data.
+... substituindo o [nome do mapa] pelo nome de alguns dos arquivos na pasta /data. O mapa numero 3 é particularmente mais propenso a entrar em situações onde não há um caminho válido até a comida.
 
 ## Limitações
-O programa ainda apenas possui o modo de cobra sem corpo. A cobra também não utiliza as vidas, e um game over ocorre assim que ela colidir com a parede.
-A função find_solution ainda não foi implementada, então a cobra apenas se move aleatoriamente pelo mapa, evitando apenas colidir com paredes, a menos que não haja outra alternativa.
+O programa ainda apenas possui o modo de cobra sem corpo. A classe de niveis ainda não foi implementada e a cobra continua jogando no mesmo nivel para sempre.

@@ -20,26 +20,23 @@ class SnakeGame{
 
     private:
         //<! atributos adicione outros se quiser
-        int l;
-        int c;
-        bool tempResult; 
-        int x,y,dir;
-        int mazeSizeX, mazeSizeY;
-        //std::vector<std::string> visitado;
-        //vector<vector<int>> visitado( int , vector<int> (int, int));
+        int l,c; //<! usados no desenho do mapa
+        bool tempResult; //<! verifica se a cobra encontrou um caminho válido até a comida
+        int x,y,dir; //<! usados para guardar a posição da cobra
+        int mazeSizeX, mazeSizeY; //<! guarda o tamnho do mapa
+
         std::vector<std::string> maze; //<! vector contendo o labirinto atual, pode ser interpretado como uma matriz
-        std::vector< std::vector <int> > visitado2;
-        //std::vector<std::string> visitado;
+        std::vector< std::vector <int> > visitado2; //<! vector contendo os caminhos que a cobra já passou
+
         int frameCount; //<! contador de frames, usado apenas como exemplo
         std::string choice; //<! usado na função process_actions para guardar a escolha do usuário
         GameStates state; //<! guarda o estado do jogo
         
 
-        int score=0;
-        int scoreToWin;
+        int score=0; //<! score atual
+        int scoreToWin; //<! score necessário para fechar o mapa
 
-        //posiçoes da comida
-        int foodL, foodC;
+        int foodL, foodC; //<! posições da comida no mapa
 
         Snake snake; //<! Cria a cobra
         Player player;
@@ -71,7 +68,14 @@ class SnakeGame{
         **/
         void process_actions();
 
+        /**
+        * @brief coloca a comida em uma posição aleatória válida no mapa
+        **/
         void place_food();
+
+        /**
+        * @brief coloca o jogador em uma posição aleatória válida no mapa
+        **/
         void place_snake();
 
         /**
