@@ -56,6 +56,7 @@ bool Player:: find_solution(int x, int y, int dir, const std::vector<std::string
         cout<<dir<<"Posicao["<<y<<"]"<<"["<<x<<"]"<<endl;
         //cout<<snake.getCurrentPos().facingDirection<<"Posicao["<<snake.getCurrentPos().l_pos<<"]"<<"["<<snake.getCurrentPos().c_pos<<"]"<<endl;
         //direcoes.push_back(snake.getCurrentPos());
+        cout<<"Hehe "<<direcoes.size()<<endl;
         solved = find_solution(x, y-1, dir, maze, visitado2);
         visitado2[y][x] = 0;
 
@@ -107,191 +108,24 @@ bool Player:: find_solution(int x, int y, int dir, const std::vector<std::string
 
     //cout<<"END "<<snake.getCurrentPos().facingDirection<<" Posicao["<<snake.getCurrentPos().l_pos<<"]"<<"["<<snake.getCurrentPos().c_pos<<"]"<<endl;
     cout<<"END "<<dir<<" Posicao["<<y<<"]"<<"["<<x<<"]"<<endl;
-    direcoes.pop_back();
+    if(direcoes.size() > 0){
+        direcoes.pop_back();
+    }   
+    
     return false;
 }
 
-Direction Player:: next_move(Snake snake, const std::vector<std::string> maze)
+Direction Player:: next_move()
 {
-    Direction newDirection = snake.getCurrentPos();
-    // srand ((unsigned int)time(NULL));
-    // int directionChosen;
+    Direction newDirection;
+    if(direcoes.size() != 0){
+        newDirection = direcoes.front();
+        return newDirection;
+    }
 
-    // //<! Embaralhar array
-    // int randomOrder[3];
-    // bool check=false;
-
-    // for(int i=0;i<3;i++){
-    //     int num_toAdd=rand() % 3;
-    //     for(int j=0; j<3;j++){
-    //         if(num_toAdd == randomOrder[j]){
-    //         check=true;
-    //         break;
-    //         }else{
-    //         check=false;
-    //         }
-    //     }
-    //     if(check==true){
-    //         i--;
-    //     }else{
-    //         randomOrder[i]=num_toAdd;
-    //     }
-    // }
-    // int movesTried=0;
-    // bool hasMoved=false;
-
-    // // for(int i=0;i<3;i++){
-    // //     std::cout<<randomOrder[i];
-    // // }
-    // // std::cout<<std::endl;
+    newDirection.l_pos = 2;
+    newDirection.c_pos = 2;
+    newDirection.facingDirection = 1;
     
-    // if(newDirection.facingDirection == 1 && hasMoved == false){ //Se estiver indo pro norte
-    //     while(movesTried<3){
-    //         if(randomOrder[movesTried] == 0){ //Continuar em linha reta
-    //             if(maze[newDirection.l_pos-1][newDirection.c_pos] != '#'){
-    //                 newDirection.l_pos-=1;
-    //                 directionChosen=0;
-    //                 hasMoved=true;
-    //                 break;
-    //             }
-    //         }
-    //         if(randomOrder[movesTried]==1){ //Ir para direita
-    //             if(maze[newDirection.l_pos][newDirection.c_pos+1] != '#'){
-    //                 newDirection.c_pos+=1;
-    //                 newDirection.facingDirection=2;
-    //                 directionChosen=1;
-    //                 hasMoved=true;
-    //                 break;
-    //             }
-    //         }
-    //         if(randomOrder[movesTried]==2){ //Ir para esquerda
-    //             if(maze[newDirection.l_pos][newDirection.c_pos-1] != '#'){
-    //                 newDirection.c_pos-=1;
-    //                 newDirection.facingDirection=4;
-    //                 directionChosen=2;
-    //                 hasMoved=true;
-    //                 break;
-    //             }
-    //         }
-    //         movesTried++;
-    //         if(movesTried==3 && hasMoved==false){
-    //             newDirection.facingDirection=-1;
-    //             return newDirection;
-    //         }
-    //     }
-    // }
-
-    // if(newDirection.facingDirection == 2 && hasMoved == false){ //Se estiver indo pro Leste
-    //     while(movesTried<3){
-    //         if(randomOrder[movesTried] == 0){ //Continuar em linha reta
-    //             if(maze[newDirection.l_pos][newDirection.c_pos+1] != '#'){
-    //                 newDirection.c_pos+=1;
-    //                 directionChosen=0;
-    //                 hasMoved=true;
-    //                 break;
-    //             }
-    //         }
-    //         if(randomOrder[movesTried]==1){ //Ir para direita
-    //             if(maze[newDirection.l_pos+1][newDirection.c_pos] != '#'){
-    //                 newDirection.l_pos+=1;
-    //                 newDirection.facingDirection=3;
-    //                 directionChosen=1;
-    //                 hasMoved=true;
-    //                 break;
-    //             }
-    //         }
-    //         if(randomOrder[movesTried]==2){ //Ir para esquerda
-    //             if(maze[newDirection.l_pos-1][newDirection.c_pos] != '#'){
-    //                 newDirection.l_pos-=1;
-    //                 newDirection.facingDirection=1;
-    //                 directionChosen=2;
-    //                 hasMoved=true;
-    //                 break;
-    //             }
-    //         }
-    //         movesTried++;
-    //         if(movesTried==3 && hasMoved==false){
-    //             newDirection.facingDirection=-1;
-    //             return newDirection;
-    //         }
-    //     }
-    // }
-
-    // if(newDirection.facingDirection == 3 && hasMoved == false){ //Se estiver indo pro Sul
-    //     while(movesTried<3){
-    //         if(randomOrder[movesTried] == 0){ //Continuar em linha reta
-    //             if(maze[newDirection.l_pos+1][newDirection.c_pos] != '#'){
-    //                 newDirection.l_pos+=1;
-    //                 directionChosen=0;
-    //                 hasMoved=true;
-    //                 break;
-    //             }
-    //         }
-    //         if(randomOrder[movesTried]==1){ //Ir para direita
-    //             if(maze[newDirection.l_pos][newDirection.c_pos+1] != '#'){
-    //                 newDirection.c_pos+=1;
-    //                 newDirection.facingDirection=2;
-    //                 directionChosen=1;
-    //                 hasMoved=true;
-    //                 break;
-    //             }
-    //         }
-    //         if(randomOrder[movesTried]==2){ //Ir para esquerda
-    //             if(maze[newDirection.l_pos][newDirection.c_pos-1] != '#'){
-    //                 newDirection.c_pos-=1;
-    //                 newDirection.facingDirection=4;
-    //                 directionChosen=2;
-    //                 hasMoved=true;
-    //                 break;
-    //             }
-    //         }
-    //         movesTried++;
-    //         if(movesTried==3 && hasMoved==false){
-    //             newDirection.facingDirection=-1;
-    //             return newDirection;
-    //         }
-    //     }
-    // }
-
-    // if(newDirection.facingDirection == 4 && hasMoved == false){ //Se estiver indo pro Oeste
-    //     while(movesTried<3){
-    //         if(randomOrder[movesTried] == 0){ //Continuar em linha reta
-    //             if(maze[newDirection.l_pos][newDirection.c_pos-1] != '#'){
-    //                 newDirection.c_pos-=1;
-    //                 directionChosen=0;
-    //                 hasMoved=true;
-    //                 break;
-    //             }
-    //         }
-    //         if(randomOrder[movesTried]==1){ //Ir para direita
-    //             if(maze[newDirection.l_pos-1][newDirection.c_pos] != '#'){
-    //                 newDirection.l_pos-=1;
-    //                 newDirection.facingDirection=1;
-    //                 directionChosen=1;
-    //                 hasMoved=true;
-    //                 break;
-    //             }
-    //         }
-    //         if(randomOrder[movesTried]==2){ //Ir para esquerda
-    //             if(maze[newDirection.l_pos+1][newDirection.c_pos] != '#'){
-    //                 newDirection.l_pos+=1;
-    //                 newDirection.facingDirection=3;
-    //                 directionChosen=2;
-    //                 hasMoved=true;
-    //                 break;
-    //             }
-    //         }
-    //         movesTried++;
-    //         if(movesTried==3 && hasMoved==false){
-    //             newDirection.facingDirection=-1;
-    //             return newDirection;
-    //         }
-    //     }
-    // }
-
-    // // newDirection.l_pos = 5;
-    // // newDirection.c_pos = 5;
-    // // newDirection.facingDirection = 2;
-    // std::cout<<directionChosen<<std::endl;
     return newDirection;
 }

@@ -10,7 +10,7 @@ class Snake {
     Direction currPos;
 
     public:
-        void ReadCurrentPos(int l, int c, int d, int s);
+        void ReadCurrentPos(int l, int c, int d);
         Direction getCurrentPos();
 };
 
