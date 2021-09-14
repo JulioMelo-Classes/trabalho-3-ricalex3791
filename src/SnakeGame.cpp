@@ -47,6 +47,9 @@ void SnakeGame::initialize_game(int argc, char *argv[]){
                     if(counter == 1){
                         mazeSizeY = stof(del);
                     }
+                    if(counter == 2){
+                        scoreToWin = stof(del);
+                    }
                     counter++;
                 }
             }
@@ -171,6 +174,10 @@ void SnakeGame::update(){
 
             // //checar se pegou a comida
             
+            if(score >= scoreToWin){
+                state = GAME_OVER;
+                game_over();
+            }
 
             x = snake.getCurrentPos().c_pos;
             y = snake.getCurrentPos().l_pos;
@@ -187,13 +194,13 @@ void SnakeGame::update(){
                 visitado2.push_back(visitadoCol);
             }
 
-            for(unsigned int i = 0; i < maze.size(); i++){
-                for(unsigned int j = 0; j < maze[i].size(); j++){
-                    cout<<maze[i][j];
+            // for(unsigned int i = 0; i < maze.size(); i++){
+            //     for(unsigned int j = 0; j < maze[i].size(); j++){
+            //         cout<<maze[i][j];
                     
-                }
-                cout<<endl;
-            }
+            //     }
+            //     cout<<endl;
+            // }
 
             tempResult = player.find_solution(x, y, dir, maze, visitado2);
             if(tempResult){
@@ -241,12 +248,9 @@ void SnakeGame::update(){
             if(player.direcoes.size()!=0){
                 player.direcoes.erase(player.direcoes.begin());
             }else{
-                snake.ReadCurrentPos(newDirection.l_pos, newDirection.c_pos,newDirection.facingDirection);
-                x = snake.getCurrentPos().c_pos;
-                y = snake.getCurrentPos().l_pos;
-
                 score++;
                 maze[foodL][foodC] = ' ';
+                snake.ReadCurrentPos(foodL, foodC,newDirection.facingDirection);
                 place_food();
 
                 cout<<"JA ACABOU"<<endl;
@@ -306,6 +310,7 @@ void SnakeGame::render(){
             cout << "----------------------------------------" << endl;
             cout << "Sua pontuaçao eh: " << score << endl;
             cout << "Restam movimentos: "<< player.direcoes.size() << endl;
+            cout << "Precisa de pontos: "<< scoreToWin << endl;
             cout << "----------------------------------------" << endl;
             //desenha todas as linhas do labirinto
             l = snake.getCurrentPos().l_pos;

@@ -36,6 +36,7 @@ class SnakeGame{
         
 
         int score=0;
+        int scoreToWin;
 
         //posiçoes da comida
         int foodL, foodC;
