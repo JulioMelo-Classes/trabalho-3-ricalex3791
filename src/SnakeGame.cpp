@@ -58,6 +58,7 @@ void SnakeGame::initialize_game(int argc, char *argv[]){
             lineCount++;
         }
     }
+    place_snake();
 
     // Define posição inicial da cobra
     for(unsigned int i = 0; i < maze.size(); i++){
@@ -120,6 +121,21 @@ void SnakeGame::place_food(){
             foodL = randX;
             foodC = randY;
             foodPlaced = true;
+        }
+    }
+}
+
+void SnakeGame::place_snake(){
+    srand ( (unsigned int)time(NULL));
+    bool snakePlaced=false;
+    int randX;
+    int randY;
+    while(snakePlaced == false){
+        randX = rand() % mazeSizeX;
+        randY = rand() % mazeSizeY;
+        if(maze[randX][randY] == ' ' && maze[randX][randY-1] != '#'){
+            maze[randX][randY] = 'v';
+            snakePlaced = true;
         }
     }
 }

@@ -71,6 +71,7 @@ class SnakeGame{
         void process_actions();
 
         void place_food();
+        void place_snake();
 
         /**
         * @brief testa o estado do jogo e desenha a tela correspondente
