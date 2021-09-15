@@ -23,4 +23,5 @@ Ainda no PowerShell, execute um "cd .." para voltar para o diretório padrão do
 ... substituindo o [nome do mapa] pelo nome de alguns dos arquivos na pasta /data. O mapa numero 3 é particularmente mais propenso a entrar em situações onde não há um caminho válido até a comida.
 
 ## Limitações
-O programa ainda apenas possui o modo de cobra sem corpo. A classe de niveis ainda não foi implementada e a cobra continua jogando no mesmo nivel para sempre.
+O programa ainda apenas possui o modo de cobra sem corpo. A classe de niveis ainda não foi implementada e a cobra continua jogando no mesmo nivel até encontrar todas as comidas, ou então até suas vidas acabarem.
+
