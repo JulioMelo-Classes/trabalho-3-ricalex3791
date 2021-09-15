@@ -21,6 +21,7 @@ class SnakeGame{
     private:
         //<! atributos adicione outros se quiser
         int l,c; //<! usados no desenho do mapa
+        int m[2],n[2];
         bool tempResult; //<! verifica se a cobra encontrou um caminho válido até a comida
         int x,y,dir; //<! usados para guardar a posição da cobra
         int mazeSizeX, mazeSizeY; //<! guarda o tamnho do mapa

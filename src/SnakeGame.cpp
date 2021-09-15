@@ -21,66 +21,72 @@ SnakeGame::SnakeGame(int argc, char *argv[]){
 }
 
 void SnakeGame::initialize_game(int argc, char *argv[]){
-    mazeSizeX = 0;
-    mazeSizeY = 0;
-    //carrega o nivel ou os níveis
-    ifstream levelFile;
-    levelFile.open(argv[1], ios::in);
-    int lineCount = 0;
-    string line;
 
-    int counter;
-    if(levelFile.is_open()){
-        while(getline(levelFile, line)){ //pega cada linha do arquivo
-            //Lê informações do mapa
-            istringstream iss(line);
-            if(lineCount==0){
-                istringstream ss(line);
-                string del;
-                counter=0;
-                    while(getline(ss, del, ' ')) {
-                    string fs(del);
+    for(int i=1; i< argc; i++)
+    {
+        mazeSizeX = 0;
+        mazeSizeY = 0;
 
-                    if(counter == 0 ){
-                        mazeSizeX = stoi(del);
+        //carrega o nivel ou os níveis
+        ifstream levelFile;
+        levelFile.open(argv[1], ios::in);
+        int lineCount = 0;
+        string line;
+
+        int counter;
+        if(levelFile.is_open()){
+            while(getline(levelFile, line)){ //pega cada linha do arquivo
+                //Lê informações do mapa
+                istringstream iss(line);
+                if(lineCount==0){
+                    istringstream ss(line);
+                    string del;
+                    counter=0;
+                        while(getline(ss, del, ' ')) {
+                        string fs(del);
+
+                        if(counter == 0 ){
+                            mazeSizeX = stoi(del);
+                        }
+                        if(counter == 1){
+                            mazeSizeY = stoi(del);
+                        }
+                        if(counter == 2){
+                            scoreToWin = stoi(del);
+                        }
+                        counter++;
                     }
-                    if(counter == 1){
-                        mazeSizeY = stoi(del);
-                    }
-                    if(counter == 2){
-                        scoreToWin = stoi(del);
-                    }
-                    counter++;
+                }
+
+                if(lineCount > 0){ //ignora a primeira linha já que ela contem informações que não são uteis para esse exemplo
+                    maze.push_back(line);
+                    
+                }
+                lineCount++;
+            }
+        }
+        place_snake();
+
+        // Define posição inicial da cobra
+        for(unsigned int i = 0; i < maze.size(); i++){
+            for(unsigned int j = 0; j < maze[i].size(); j++){
+                if(maze[i][j]=='v'){
+                    maze[i][j]=' ';
+                    snake.ReadCurrentPos(i, j, 1);
                 }
             }
-
-            if(lineCount > 0){ //ignora a primeira linha já que ela contem informações que não são uteis para esse exemplo
-                maze.push_back(line);
-                
-            }
-            lineCount++;
         }
+
+        // Define posição da primeira comida
+        place_food();
+
+        cout<<"O tamanho do mapa eh ["<<mazeSizeX<<"]["<<mazeSizeY<<"]"<<endl;
+
+        cout<<"mudando state"<<endl;
+
+        state = RUNNING;
+
     }
-    place_snake();
-
-    // Define posição inicial da cobra
-    for(unsigned int i = 0; i < maze.size(); i++){
-        for(unsigned int j = 0; j < maze[i].size(); j++){
-            if(maze[i][j]=='v'){
-                maze[i][j]=' ';
-                snake.ReadCurrentPos(i, j, 1);
-            }
-        }
-    }
-
-    // Define posição da primeira comida
-    place_food();
-
-    cout<<"O tamanho do mapa eh ["<<mazeSizeX<<"]["<<mazeSizeY<<"]"<<endl;
-
-    cout<<"mudando state"<<endl;
-
-    state = RUNNING;
 }
 
 void SnakeGame::place_food(){
@@ -135,11 +141,6 @@ void SnakeGame::update(){
     //atualiza o estado do jogo de acordo com o resultado da chamada de "process_input"
     switch(state){
         case RUNNING:
-            if(score >= scoreToWin){
-                state = GAME_OVER;
-                game_over();
-            }
-
             x = snake.getCurrentPos().c_pos;
             y = snake.getCurrentPos().l_pos;
             dir = snake.getCurrentPos().facingDirection;
@@ -170,9 +171,15 @@ void SnakeGame::update(){
             //     state = WAITING_USER;
             break;
         case RENDERING:
+            if(score >= scoreToWin){
+                state = GAME_OVER;
+                game_over();
+            }
+            snake.ReadLastPos(snake.getCurrentPos());
             Direction newDirection;
             newDirection = player.next_move(snake);
             snake.ReadCurrentPos(newDirection.l_pos, newDirection.c_pos,newDirection.facingDirection);
+            
 
             if(player.direcoes.size()!=0){
                 player.direcoes.erase(player.direcoes.begin());
@@ -240,7 +247,17 @@ void SnakeGame::render(){
             l = snake.getCurrentPos().l_pos;
             c = snake.getCurrentPos().c_pos;
 
-            
+            // if(snake.getLastPos().size() > 3){
+            //     for(int i =0;i<4;i++){
+            //         m[i] = snake.getLastPos().end()[-(i+1)].l_pos;
+            //         n[i] = snake.getLastPos().end()[-(i+1)].c_pos -1;
+            //     }
+                
+            // }
+            // if(snake.getLastPos().size() > 1){
+            // m[0] = snake.getLastPos().end()[-1].l_pos;
+            // n[0] = snake.getLastPos().end()[-1].c_pos -1;
+            // }
 
             char snakeHead;
             if(snake.getCurrentPos().facingDirection == 1){
@@ -260,6 +277,12 @@ void SnakeGame::render(){
                     }else{
                        cout<<maze[i][j];
                     }
+
+                    // for(int u=0;u<4;u++){
+                    //     if((i)==m[0] && (j)==n[0]){
+                    //         cout<<"o";
+                    //     }
+                    // }
                     
                 }
                 cout<<endl;

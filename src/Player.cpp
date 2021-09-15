@@ -8,7 +8,7 @@
 
 using namespace std;
 
-bool Player:: find_solution(int x, int y, int dir, const std::vector<std::string> maze, std::vector< std::vector <int> > visitado2){
+bool Player:: find_solution(int x, int y, int dir, const std::vector<std::string> maze, std::vector< std::vector <int> > visitado){
     bool solved = false;
     Direction newMove;
     if(maze[y][x] == '*'){
@@ -16,8 +16,9 @@ bool Player:: find_solution(int x, int y, int dir, const std::vector<std::string
         return true;
     }
 
-    if(maze[y+1][x] != '#' && dir != 1 && visitado2[y+1][x] != 1){
-        visitado2[y][x] = 1;
+    // Cobra está indo para o sul
+    if(maze[y+1][x] != '#' && dir != 1 && visitado[y+1][x] != 1){
+        visitado[y][x] = 1;
         dir = 3;
 
         newMove.l_pos = y;
@@ -26,8 +27,8 @@ bool Player:: find_solution(int x, int y, int dir, const std::vector<std::string
 
         direcoes.push_back(newMove);
         
-        solved = find_solution(x, y+1, dir, maze, visitado2);
-        visitado2[y][x] = 0;
+        solved = find_solution(x, y+1, dir, maze, visitado);
+        visitado[y][x] = 0;
 
         if(solved){
             return true;
@@ -35,8 +36,8 @@ bool Player:: find_solution(int x, int y, int dir, const std::vector<std::string
     }
 
     // Cobra está indo para o norte
-    if(maze[y-1][x] != '#' && dir != 3 && visitado2[y-1][x] != 1){
-        visitado2[y][x] = 1;
+    if(maze[y-1][x] != '#' && dir != 3 && visitado[y-1][x] != 1){
+        visitado[y][x] = 1;
         dir = 1;
 
         newMove.l_pos = y;
@@ -45,8 +46,8 @@ bool Player:: find_solution(int x, int y, int dir, const std::vector<std::string
 
         direcoes.push_back(newMove);
 
-        solved = find_solution(x, y-1, dir, maze, visitado2);
-        visitado2[y][x] = 0;
+        solved = find_solution(x, y-1, dir, maze, visitado);
+        visitado[y][x] = 0;
 
         if(solved){
             return true;
@@ -54,8 +55,9 @@ bool Player:: find_solution(int x, int y, int dir, const std::vector<std::string
 
     }
 
-    if(maze[y][x+1] != '#' && dir != 4 && visitado2[y][x+1] != 1){
-        visitado2[y][x] = 1;
+    // Cobra está indo para o leste
+    if(maze[y][x+1] != '#' && dir != 4 && visitado[y][x+1] != 1){
+        visitado[y][x] = 1;
         dir = 2;
 
         newMove.l_pos = y;
@@ -64,16 +66,17 @@ bool Player:: find_solution(int x, int y, int dir, const std::vector<std::string
 
         direcoes.push_back(newMove);
 
-        solved = find_solution(x+1, y, dir, maze, visitado2);
-        visitado2[y][x] = 0;
+        solved = find_solution(x+1, y, dir, maze, visitado);
+        visitado[y][x] = 0;
 
         if(solved){
             return true;
         }
     }
     
-    if(maze[y][x-1] != '#' && dir != 2 && visitado2[y][x-1] != 1){
-        visitado2[y][x] = 1;
+    // Cobra está indo para o oeste
+    if(maze[y][x-1] != '#' && dir != 2 && visitado[y][x-1] != 1){
+        visitado[y][x] = 1;
         dir = 4;
         
         newMove.l_pos = y;
@@ -82,8 +85,8 @@ bool Player:: find_solution(int x, int y, int dir, const std::vector<std::string
 
         direcoes.push_back(newMove);
 
-        solved = find_solution(x-1, y, dir, maze, visitado2);
-        visitado2[y][x] = 0;
+        solved = find_solution(x-1, y, dir, maze, visitado);
+        visitado[y][x] = 0;
 
         if(solved){
             return true;
