@@ -90,7 +90,7 @@ void SnakeGame::initialize_game(int argc, char *argv[]){
 }
 
 void SnakeGame::place_food(){
-    srand ( (unsigned int)time(NULL));
+    srand ( (unsigned int)time(NULL) * 3);
     bool foodPlaced=false;
     int randX;
     int randY;
@@ -153,33 +153,37 @@ void SnakeGame::update(){
                 {
                     visitadoCol.push_back( 0 );
                 }
-                visitado2.push_back(visitadoCol);
+                visitado.push_back(visitadoCol);
             }
 
-            tempResult = player.find_solution(x, y, dir, maze, visitado2);
+            tempResult = player.find_solution(x, y, dir, maze, visitado);
             if(tempResult){
                 cout<<"ENCONTROU SOLUCAO"<<endl;
                 state = RENDERING;
             }else{
                 cout<<"Nao foram encontradas solucoes"<<endl;
-                state = GAME_OVER;
+
+                state = RANDOM;
                 game_over();
             }
 
-
-            // if(frameCount>0 && frameCount%1 == 0) //depois de 10 frames o jogo pergunta se o usuário quer continuar
-            //     state = WAITING_USER;
             break;
         case RENDERING:
+
+            //Verifica se deve encerrar o jogo
             if(score >= scoreToWin){
+                state = GAME_OVER;
+                victory();
+            }
+            if(snake.getLives() <= 0){
                 state = GAME_OVER;
                 game_over();
             }
-            snake.ReadLastPos(snake.getCurrentPos());
+
+            //Desenho
             Direction newDirection;
             newDirection = player.next_move(snake);
             snake.ReadCurrentPos(newDirection.l_pos, newDirection.c_pos,newDirection.facingDirection);
-            
 
             if(player.direcoes.size()!=0){
                 player.direcoes.erase(player.direcoes.begin());
@@ -192,6 +196,43 @@ void SnakeGame::update(){
                 state = RUNNING;
             }
 
+            break;
+
+        case RANDOM:
+            //Faz a cobra se mover aleatoriamente ate encontrar uma comida
+            Direction temp;
+            temp = player.random_move(snake, maze);
+
+            //Se não houver saida, a cobra bate na parede e reseta sua posição
+            if(temp.facingDirection == -1){
+                snake.setLives(1);
+                place_snake();
+
+                for(unsigned int i = 0; i < maze.size(); i++){
+                    for(unsigned int j = 0; j < maze[i].size(); j++){
+                        if(maze[i][j]=='v'){
+                            maze[i][j]=' ';
+                            snake.ReadCurrentPos(i, j, 1);
+                        }
+                        if(maze[i][j]=='*'){
+                            maze[i][j]=' ';
+                        }
+                    }
+                }
+
+                place_food();
+                state = RUNNING;
+                break;
+            }
+
+            snake.ReadCurrentPos(temp.l_pos, temp.c_pos, temp.facingDirection);
+
+            //checar se pegou a comida
+            if(temp.l_pos == foodL && temp.c_pos == foodC){
+                score++;
+                maze[foodL][foodC] = ' ';
+                place_food();
+            }
             break;
         case WAITING_USER: //se o jogo estava esperando pelo usuário então ele testa qual a escolha que foi feita
             if(choice == "n"){
@@ -239,27 +280,15 @@ void SnakeGame::render(){
             break;
         case RENDERING:
             cout << "----------------------------------------" << endl;
-            cout << "Sua pontuaçao eh: " << score << endl;
-            cout << "Restam movimentos: "<< player.direcoes.size() << endl;
+            cout << "Sua pontuacao eh: " << score << endl;
+            cout << "Vidas restantes: "<< snake.getLives() << endl;
             cout << "Pontos para vencer: "<< (scoreToWin-score) << endl;
             cout << "----------------------------------------" << endl;
             //desenha todas as linhas do labirinto
             l = snake.getCurrentPos().l_pos;
             c = snake.getCurrentPos().c_pos;
 
-            // if(snake.getLastPos().size() > 3){
-            //     for(int i =0;i<4;i++){
-            //         m[i] = snake.getLastPos().end()[-(i+1)].l_pos;
-            //         n[i] = snake.getLastPos().end()[-(i+1)].c_pos -1;
-            //     }
-                
-            // }
-            // if(snake.getLastPos().size() > 1){
-            // m[0] = snake.getLastPos().end()[-1].l_pos;
-            // n[0] = snake.getLastPos().end()[-1].c_pos -1;
-            // }
-
-            char snakeHead;
+            //char snakeHead;
             if(snake.getCurrentPos().facingDirection == 1){
                 snakeHead = 'v';
             }else if(snake.getCurrentPos().facingDirection == 2){
@@ -277,12 +306,38 @@ void SnakeGame::render(){
                     }else{
                        cout<<maze[i][j];
                     }
+                }
+                cout<<endl;
+            }
+            break;
+        case RANDOM:
+            cout << "----------------------------------------" << endl;
+            cout << "Sua pontuacao eh: " << score << endl;
+            cout << "Vidas restantes: "<< snake.getLives() << endl;
+            cout << "Pontos para vencer: "<< (scoreToWin-score) << endl;
+            cout << "----------------------------------------" << endl;
+            //desenha todas as linhas do labirinto
+            l = snake.getCurrentPos().l_pos;
+            c = snake.getCurrentPos().c_pos;
 
-                    // for(int u=0;u<4;u++){
-                    //     if((i)==m[0] && (j)==n[0]){
-                    //         cout<<"o";
-                    //     }
-                    // }
+            //char snakeHead;
+            if(snake.getCurrentPos().facingDirection == 1){
+                snakeHead = 'v';
+            }else if(snake.getCurrentPos().facingDirection == 2){
+                snakeHead = '<';
+            }else if(snake.getCurrentPos().facingDirection == 3){
+                snakeHead = '^';
+            }else if(snake.getCurrentPos().facingDirection == 4){
+                snakeHead = '>';
+            }
+
+            for(unsigned int i = 0; i < maze.size(); i++){
+                for(unsigned int j = 0; j < maze[i].size(); j++){
+                    if(i==l && j==c){
+                       cout<<snakeHead;
+                    }else{
+                       cout<<maze[i][j];
+                    }
                     
                 }
                 cout<<endl;
@@ -313,11 +368,15 @@ void SnakeGame::game_over(){
     cout<<"Desculpe, voce perdeu!"<<endl;
 }
 
+void SnakeGame::victory(){
+    cout<<"Parabens, voce ganhou!"<<endl;
+}
+
 void SnakeGame::loop(){
     while(state != GAME_OVER){
         process_actions();
         update();
         render();
-        wait(100);// espera 1 segundo entre cada frame
+        wait(10);// espera 1 segundo entre cada frame
     }
 }

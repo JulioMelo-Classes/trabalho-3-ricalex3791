@@ -8,7 +8,6 @@ class Snake {
     int size = 1; //<! Tamanho atual da cobra
     int lives = 5; //<! vidas restantes
     Direction currPos; //<! posição atual
-    std::vector<Direction> pastPos;
 
     public:
         /*! lê a posição atual da cobra
@@ -18,14 +17,13 @@ class Snake {
 		*/
         void ReadCurrentPos(int l, int c, int d); 
 
-        void ReadLastPos(Direction lastMove); 
-
         /*!
 				@return a posição atual da cobra
 		*/
         Direction getCurrentPos();
 
-        std::vector<Direction> getLastPos();
+        void setLives(int i);
+		int getLives();
 };
 
 #endif 

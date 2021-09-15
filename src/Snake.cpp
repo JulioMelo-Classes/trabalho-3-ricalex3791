@@ -7,14 +7,14 @@ void Snake:: ReadCurrentPos(int l, int c, int d){
     currPos.c_pos = c;
 }
 
-void Snake:: ReadLastPos(Direction lastMove){
-    pastPos.push_back(lastMove);
-}
-
 Direction Snake:: getCurrentPos(){
     return currPos;
 }
 
-std::vector<Direction> Snake:: getLastPos(){
-    return pastPos;
+void Snake:: setLives(int i){
+    lives -= i;
+}
+
+int Snake:: getLives(){
+    return lives;
 }

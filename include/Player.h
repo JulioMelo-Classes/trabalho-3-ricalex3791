@@ -23,6 +23,13 @@ class Player {
 				@return uma direção para a cobra com base na sequência de direções formada
 		*/
         Direction next_move(Snake snake);
+
+        /*! Procura um caminho válido até a comida
+				@param snake cobra
+                @param snake vector contendo o mapa
+				@return uma direção para a cobra com base na sequência de direções formada
+		*/
+        Direction random_move(Snake snake, const std::vector<std::string> maze);
 };
 
 #endif 

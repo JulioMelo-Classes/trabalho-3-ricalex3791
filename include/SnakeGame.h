@@ -13,21 +13,22 @@ class SnakeGame{
         **/
         enum GameStates{
             RUNNING, //<! quando o jogo está executando o estado é RUNNING
-            RENDERING,
-            GAME_OVER, //<! quando o jogo deve terminar o estado é GAME_OVER
+            RENDERING, //<! quando o jogo está desenhando o mapa e cobra o estado é RENDERING
+            RANDOM, //<! quando a cobra não encontrar caminho valido, irá começar a se mover aleatoriamente 
+            GAME_OVER, //<! quando o jogo deve terminar
             WAITING_USER //<! quando o jogo deve esperar por uma entrada do usuário o estado é WAITING_USER
         };
 
     private:
         //<! atributos adicione outros se quiser
         int l,c; //<! usados no desenho do mapa
-        int m[2],n[2];
+        char snakeHead; //<! usado para desenhar a cobra
         bool tempResult; //<! verifica se a cobra encontrou um caminho válido até a comida
         int x,y,dir; //<! usados para guardar a posição da cobra
         int mazeSizeX, mazeSizeY; //<! guarda o tamnho do mapa
 
         std::vector<std::string> maze; //<! vector contendo o labirinto atual, pode ser interpretado como uma matriz
-        std::vector< std::vector <int> > visitado2; //<! vector contendo os caminhos que a cobra já passou
+        std::vector< std::vector <int> > visitado; //<! vector contendo os caminhos que a cobra já passou
 
         int frameCount; //<! contador de frames, usado apenas como exemplo
         std::string choice; //<! usado na função process_actions para guardar a escolha do usuário
@@ -88,6 +89,11 @@ class SnakeGame{
         * @brief é chamada quando o jogo termina a fim de destruir/resetar elementos do estado do jogo
         **/
         void game_over();
+
+        /**
+        * @brief é chamada quando o jogo termina a fim de destruir/resetar elementos do estado do jogo
+        **/
+        void victory();
 };
 
 #endif //SnakeGame_h
