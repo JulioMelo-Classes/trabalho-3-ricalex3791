@@ -25,3 +25,51 @@ Ainda no PowerShell, execute um "cd .." para voltar para o diretório padrão do
 ## Limitações
 O programa ainda apenas possui o modo de cobra sem corpo. A classe de niveis ainda não foi implementada e a cobra continua jogando no mesmo nivel até encontrar todas as comidas, ou então até suas vidas acabarem.
 
+# Avaliação CP2
+
+## FindSolution.pacman
+
+O método find soluiton ou similar deve ser capaz de encontrar o conjunto de comandos que levam da posição atual da cobrinha até a posição da comida no modo pacman.
+
+**Avaiação**
+
+80% acho que o método find solution está implementado de forma equivocada, uma vez que ele desmarca posições visitadas quando não encontra uma solução, o que pode causar um loop infinito.
+
+## FindSolution.snake
+
+O método find soluiton ou similar deve ser capaz de encontrar o conjunto de comandos que levam da posição atual da cobrinha até a posição da comida no modo snake.
+
+**Avaliação**
+
+não implementado
+
+## Random start
+
+Deveria ser implementado na execução do programa um comando que permita que a posição inicial seja sorteada aleatoriamente. A posição inicial precisa ser válida e não deve causar a cobrinha/pacman iniciar em uma posição encurralada.
+
+**Avaliação**
+
+não implementado
+
+## Level Loop
+
+Deveria se implementado na execução do programa um comando que permite que os níveis fiquem se repetindo infinitamente, com a transição de mapas indo do primeiro nível até o último nível e voltando para o primeiro, de forma que seja mantida a contagem de pontos bem como a contagem de nível.
+
+**Avaliação**
+
+não implementado
+
+## Organização / Compilação automatizada / Casos de Teste
+
+Para a entrega final a organização do código em scr/data/include e compilação automatizada de alguma forma deve ser feita.
+
+**Avaliação**
+
+70% não foram feitos casos de teste
+
+## Documentação do código / Readme / Documentação de Casos de Teste
+
+**Avaliação**
+
+70% não foram documentados casos de teste
+
